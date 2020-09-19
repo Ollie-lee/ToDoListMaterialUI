@@ -29,6 +29,21 @@ export default function ToDoApp() {
   const addTodo = newTodoText => {
     setTodos([...todos, { id: 4, task: newTodoText, completed: false }])
   }
+  const changeCompleted = (todo) => {
+    setTodos(todos.map(todoItem => {
+      if (todo.id === todoItem.id) {
+        return {
+          ...todo,
+          completed: !todo.completed
+        }
+      }
+      return todoItem;
+    }))
+  }
+
+  const deleteTodo = (todo) => {
+    setTodos(todos.filter((todoItem => todo.id !== todoItem.id)))
+  }
 
   return (
     <Paper
@@ -47,7 +62,10 @@ export default function ToDoApp() {
           <TodoForm
             addTodo={addTodo}
           />
-          <TodoList todos={todos} />
+          <TodoList todos={todos}
+            changeCompleted={changeCompleted}
+            deleteTodo={deleteTodo}
+          />
         </Grid>
       </Grid>
     </Paper>
