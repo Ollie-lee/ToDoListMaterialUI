@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TodoList from './TodoList'
 import TodoForm from './TodoForm'
+import { v4 as uuidv4 } from 'uuid';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
 export default function ToDoApp() {
   const classes = useStyles();
   const initialTodos = [
-    { id: 1, task: 'eat', completed: false },
-    { id: 2, task: 'sleep', completed: true },
-    { id: 3, task: 'code', completed: false }
+    { id: uuidv4(), task: 'eat', completed: false },
+    { id: uuidv4(), task: 'sleep', completed: true },
+    { id: uuidv4(), task: 'code', completed: false }
   ]
   const [todos, setTodos] = useState(initialTodos)
   const addTodo = newTodoText => {
-    setTodos([...todos, { id: 4, task: newTodoText, completed: false }])
+    setTodos([...todos, { id: uuidv4(), task: newTodoText, completed: false }])
   }
   const changeCompleted = (todo) => {
     setTodos(todos.map(todoItem => {
