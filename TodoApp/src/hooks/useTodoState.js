@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import React, { useState, useEffect } from 'react'
-
+import useLocalStorage from './useLocalStorage';
 
 export default function useTodoState() {
   const initialTodos = [
@@ -9,11 +9,8 @@ export default function useTodoState() {
     { id: uuidv4(), task: 'code', completed: false }
   ]
 
-  const [todos, setTodos] = useState(JSON.parse(window.localStorage.getItem('todos')) || initialTodos)
+  const [todos, setTodos] = useLocalStorage('todos', initialTodos)
 
-  useEffect(() => {
-    window.localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
 
   return {
     todos,
