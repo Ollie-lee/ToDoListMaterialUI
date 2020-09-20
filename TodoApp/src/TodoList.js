@@ -8,24 +8,28 @@ export default function TodoList(props) {
   const {
     todos,
     changeCompleted,
-    deleteTodo
+    deleteTodo,
+    editTodo
   } = props
   return (
-    <Paper>
-      <List>
-        {todos.map(todo => (
-          <>
-            <Todo
-              key={todo.id}
-              task={todo.task}
-              completed={todo.completed}
-              changeCompleted={() => changeCompleted(todo)}
-              deleteTodo={() => deleteTodo(todo)}
-            />
-            <Divider />
-          </>
-        ))}
-      </List>
-    </Paper>
+    todos.length ?
+      <Paper>
+        <List>
+          {todos.map((todo, i) => (
+            <>
+              <Todo
+                id={todo.id}
+                key={todo.id}
+                task={todo.task}
+                completed={todo.completed}
+                changeCompleted={() => changeCompleted(todo)}
+                deleteTodo={() => deleteTodo(todo)}
+                editTodo={editTodo}
+              />
+              {i !== todos.length - 1 && <Divider />}
+            </>
+          ))}
+        </List>
+      </Paper> : null
   )
 }

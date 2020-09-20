@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'fontsource-roboto';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,12 +27,14 @@ export default function ToDoApp() {
     { id: uuidv4(), task: 'sleep', completed: true },
     { id: uuidv4(), task: 'code', completed: false }
   ]
-  const [todos, setTodos] = useState(initialTodos)
+  const [todos, setTodos] = useState(JSON.parse(window.localStorage.getItem('todos')) || initialTodos)
   const addTodo = newTodoText => {
-    setTodos([...todos, { id: uuidv4(), task: newTodoText, completed: false }])
+    const newTodos = [...todos, { id: uuidv4(), task: newTodoText, completed: false }]
+    setTodos(newTodos)
+    // window.localStorage.setItem('todos', JSON.stringify(newTodos))
   }
   const changeCompleted = (todo) => {
-    setTodos(todos.map(todoItem => {
+    const changedTodos = todos.map(todoItem => {
       if (todo.id === todoItem.id) {
         return {
           ...todo,
@@ -40,11 +42,26 @@ export default function ToDoApp() {
         }
       }
       return todoItem;
-    }))
+    })
+    setTodos(changedTodos)
+    // window.localStorage.setItem('todos', JSON.stringify(changedTodos))
+  }
+
+  useEffect(() => {
+    window.localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
+
+  const editTodo = (id, task) => {
+    const updatedTodos = todos.map((todo) => todo.id === id ? { ...todo, task } : todo)
+    setTodos(updatedTodos)
+    // window.localStorage.setItem('todos', JSON.stringify(updatedTodos))
+
   }
 
   const deleteTodo = (todo) => {
-    setTodos(todos.filter((todoItem => todo.id !== todoItem.id)))
+    const deletedTodos = todos.filter((todoItem => todo.id !== todoItem.id))
+    setTodos(deletedTodos)
+    // window.localStorage.setItem('todos', JSON.stringify(deletedTodos))
   }
 
   return (
@@ -67,6 +84,7 @@ export default function ToDoApp() {
           <TodoList todos={todos}
             changeCompleted={changeCompleted}
             deleteTodo={deleteTodo}
+            editTodo={editTodo}
           />
         </Grid>
       </Grid>
